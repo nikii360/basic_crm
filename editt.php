@@ -1,0 +1,50 @@
+<?php
+  include_once('header.php');
+?>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1>Killer CRM</h1>
+    <hr/>
+    <?php
+    $_GET['currentPage'] ='editt';
+    include_once('menu.php');
+    include("config\db2.php");
+    session_start();
+
+    if(isset($_POST['new'])&& $_POST['new']==1){
+      $name=$_REQUEST['name'];
+      $idea = "SELECT * FROM contact WHERE Contact_First = '$name'";
+      $result= $conn->query($idea);
+
+      if ($result->num_rows > 0) {
+        while($row= $result->fetch_assoc()){
+          $_SESSION["edits2"]=$row["id"];
+          header("location: editdetails2.php");
+        }
+      }else{
+        echo $idea."<br/>".$conn->error;
+      }
+    }
+
+    ?>
+
+    <h3>EDIT TASK DETAILS</h3>
+
+    <form action="editt.php" method="post" name="editshit2">
+    <input type="hidden" name="new" value="1" />
+      <label>Enter Name of the contact: </label>
+      <input type="text" name="name" class="box">
+      <br/>
+      <div class="center">
+        <input type="submit" value="submit" name="submit">
+      </div>
+    </form>
+
+    <?php include_once('footer.php'); ?>
+  </body>
+</html>
